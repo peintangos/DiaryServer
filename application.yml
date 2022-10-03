@@ -1,0 +1,6 @@
+spring:
+  datasource:
+   url: jdbc:mysql://localhost:3306/diary_db
+   username: docker
+   password: docker
+   driver-class-name: com.mysql.jdbc.Driver
