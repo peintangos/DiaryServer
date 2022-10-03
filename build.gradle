@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
+	id "org.flywaydb.flyway" version "7.5.2"
 }
 
 group = 'jumpei.matsuo'
@@ -26,7 +27,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// MYSQLDriver
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+}
 
+flyway {
+	url = 'jdbc:mysql://localhost:3306/diary_db'
+	user = 'docker'
+	password = 'docker'
 }
 
 tasks.named('test') {
