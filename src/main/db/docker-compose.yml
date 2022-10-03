@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    container_name: diary_mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: diary_db
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    ports:
+      - "3306:3306"
