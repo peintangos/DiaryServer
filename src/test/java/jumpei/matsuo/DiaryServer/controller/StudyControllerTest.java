@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import java.time.LocalDateTime;
 import jumpei.matsuo.DiaryServer.controller.dto.CreateStudyDto;
 import jumpei.matsuo.DiaryServer.domain.StudyRepository;
 import jumpei.matsuo.DiaryServer.repository.StudyRepositoryImpl;
@@ -35,18 +36,24 @@ class StudyControllerTest {
   @Test
   @DisplayName("/study にPOSTできることを確認する。")
   void t0() throws Exception{
-    // JacksonでオブジェクトをJson形式に変換
-    CreateStudyDto createStudyDto = new CreateStudyDto();
-    ObjectMapper mapper = new ObjectMapper();
-    // 空のクラスからJSONに変換しようとするとエラーになるワークアラウンド
-    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-    String json = mapper.writeValueAsString(createStudyDto);
 
     mockMvc.perform(
         post("/study")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json)
+            .content(requestJson())
     ).andExpect(status().is(200)
     );
+  }
+
+  private String requestJson() {
+    return """
+        {
+        "subject": "IT",
+        "studyHour": 8.5,
+        "subjectDetail": "JOOQを勉強した。",
+        "tag": "資格試験",
+        "inputDateTime": "2023-01-08 09:50:00"
+        }
+        """;
   }
 }

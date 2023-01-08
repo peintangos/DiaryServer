@@ -16,7 +16,7 @@ public class StudyController {
   private StudyService studyService;
 
   @PostMapping
-  void addStudy(@RequestBody CreateStudyDto createStudyDto){
-    studyService.persist(createStudyDto.of());
+  public void addStudy(@RequestBody CreateStudyDto createStudyDto){
+    studyService.persist(createStudyDto.createStudy());
   }
 }

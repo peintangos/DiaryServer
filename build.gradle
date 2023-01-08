@@ -1,8 +1,17 @@
+buildscript {
+	configurations['classpath'].resolutionStrategy.eachDependency {
+		if (requested.group == 'org.jooq') {
+			useVersion '3.17.6'
+		}
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
 	id "org.flywaydb.flyway" version "7.5.2"
+	id "nu.studer.jooq" version "8.1"
 }
 
 group = 'jumpei.matsuo'
@@ -19,6 +28,8 @@ repositories {
 	mavenCentral()
 }
 
+ext['jooq.version'] = jooq.version.get()
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -27,6 +38,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// MYSQLDriver
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+	// JOOQ
+	implementation group: 'org.jooq', name: 'jooq', version: '3.17.6'
+	// java.lang.ClassNotFoundException: jakarta.xml.bind.annotation.XmlSchemaが発生することへのワークアラウンド
+	jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:3.0.1")
+	// java.lang.ClassNotFoundException: com.mysql.cj.jdbc.Driverが発生する。
+	jooqGenerator group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+
 }
 
 flyway {
@@ -35,6 +53,42 @@ flyway {
 	password = 'docker'
 }
 
+jooq {
+	configurations {
+		main {
+			generationTool {
+				jdbc {
+					url = 'jdbc:mysql://localhost:3306/diary_db'
+					user = 'docker'
+					password = 'docker'
+				}
+				generator {
+					name = 'org.jooq.codegen.DefaultGenerator'
+					database {
+						name = 'org.jooq.meta.mysql.MySQLDatabase'
+					}
+					target {
+						packageName = 'jumpei.matsuo.DiaryServer'
+						directory = 'build/generated-src/jooq/main'
+					}
+					strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+				}
+			}
+		}
+	}
+}
+
+
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+
+// Publishing a build scan to scans.gradle.com requires accepting the Gradle Terms of Service defined at https://gradle.com/terms-of-service. Do you accept these terms? [yes, no]
+// generateJooqをすると、同意を求められるので、自動的にagreeする。
+if (hasProperty('buildScan')) {
+	buildScan {
+		termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+		termsOfServiceAgree = 'yes'
+	}
 }
