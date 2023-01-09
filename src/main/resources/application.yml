@@ -1,0 +1,6 @@
+# JOOQを用いて、MYSQL Serverにアクセスするための設定
+spring:
+  datasource:
+    jdbcUrl: jdbc:mysql://localhost:3306/diary_db
+    username: docker
+    password: docker

@@ -3,6 +3,7 @@ package jumpei.matsuo.DiaryServer.domain;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import org.springframework.cglib.core.Local;
 
 public class Study {
 
@@ -25,7 +26,14 @@ public class Study {
     }catch (DateTimeParseException e){
       this.inputDateTime = LocalDateTime.now();
     }
-
+  }
+  public Study(String subject, double studyHour, String subjectDetail, String tag,
+      LocalDateTime inputDateTime) {
+    this.subject = subject;
+    this.studyHour = studyHour;
+    this.subjectDetail = subjectDetail;
+    this.tag = tag;
+    this.inputDateTime = inputDateTime;
   }
 
   public String getSubject() {

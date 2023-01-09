@@ -44,7 +44,13 @@ dependencies {
 	jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:3.0.1")
 	// java.lang.ClassNotFoundException: com.mysql.cj.jdbc.Driverが発生する。
 	jooqGenerator group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-
+	// TestContainers(https://www.testcontainers.org/)
+	testImplementation "org.testcontainers:testcontainers:1.17.6"
+	implementation platform('org.testcontainers:testcontainers-bom:1.17.6') //import bom
+	testImplementation "org.testcontainers:mysql:1.17.6"
+	testImplementation 'org.testcontainers:junit-jupiter'
+	// FlywayをJavaのコードから使う(TestのMigration用途で使用している。)
+	testImplementation("org.flywaydb:flyway-mysql")
 }
 
 flyway {
