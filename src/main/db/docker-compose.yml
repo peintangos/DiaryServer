@@ -10,5 +10,7 @@ services:
       MYSQL_USER: docker
       MYSQL_PASSWORD: docker
       TZ: 'Asia/Tokyo'
+    volumes:
+      - ./conf/my.cnf:/etc/mysql/my.cnf
     ports:
       - "3306:3306"
