@@ -45,6 +45,6 @@ public class CreateStudyDto {
 
 
   public Study createStudy() {
-    return new Study();
+    return new Study(subject,studyHour,subjectDetail,tag,inputDateTime);
   }
 }
