@@ -1,9 +1,13 @@
 package jumpei.matsuo.DiaryServer.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import org.springframework.cglib.core.Local;
 
 public class Study {
 
@@ -12,15 +16,18 @@ public class Study {
   private double studyHour;
   private String subjectDetail;
   private String tag;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime inputDateTime;
+  private final int userId;
 
 
   public Study(String subject, double studyHour, String subjectDetail, String tag,
-      String inputDateTime) {
+      String inputDateTime, int userId) {
     this.subject = subject;
     this.studyHour = studyHour;
     this.subjectDetail = subjectDetail;
     this.tag = tag;
+    this.userId = userId;
     try {
       this.inputDateTime = LocalDateTime.parse(inputDateTime,FORMATTER);
     }catch (DateTimeParseException e){
@@ -28,12 +35,13 @@ public class Study {
     }
   }
   public Study(String subject, double studyHour, String subjectDetail, String tag,
-      LocalDateTime inputDateTime) {
+      LocalDateTime inputDateTime, int userId) {
     this.subject = subject;
     this.studyHour = studyHour;
     this.subjectDetail = subjectDetail;
     this.tag = tag;
     this.inputDateTime = inputDateTime;
+    this.userId = userId;
   }
 
   public String getSubject() {
@@ -54,5 +62,9 @@ public class Study {
 
   public double getStudyHour() {
     return studyHour;
+  }
+
+  public int getUserId() {
+    return userId;
   }
 }

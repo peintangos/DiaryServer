@@ -1,7 +1,5 @@
 package jumpei.matsuo.DiaryServer.repository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import jumpei.matsuo.DiaryServer.config.JooqConfiguration;
 import jumpei.matsuo.DiaryServer.controller.StudyController;
 import jumpei.matsuo.DiaryServer.domain.Study;
@@ -9,18 +7,15 @@ import jumpei.matsuo.DiaryServer.domain.StudyRepository;
 import jumpei.matsuo.DiaryServer.service.StudyService;
 import org.assertj.core.api.SoftAssertions;
 import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -64,7 +59,8 @@ class StudyRepositoryImplTest extends AbstractTestcontainersTests{
     String tag = "tag";
     String inputDateTime = "2023-01-11 09:50:01";
 
-    Study study = new Study(subject, studyHour, subjectDetail, tag, inputDateTime);
+    int userId = 100;
+    Study study = new Study(subject, studyHour, subjectDetail, tag, inputDateTime, userId);
     studyRepository.save(study);
     Study result = studyRepository.findAll().get(0);
 
@@ -81,6 +77,7 @@ class StudyRepositoryImplTest extends AbstractTestcontainersTests{
 }
 
 @SpringBootTest
+@JooqTest
 @DirtiesContext // ①
 @Testcontainers
 @Import(JooqConfiguration.class)

@@ -21,6 +21,7 @@ public class StudyRepositoryImpl implements StudyRepository {
   public void save(Study study) {
     dslContext.
         insertInto(DIARY_HISTORY)
+        .set(DIARY_HISTORY.USERID,study.getUserId())
         .set(DIARY_HISTORY.SUBJECT, study.getSubject())
         .set(DIARY_HISTORY.SUBJECTDETAIL, study.getSubjectDetail())
         .set(DIARY_HISTORY.STUDYHOUR, study.getStudyHour())
@@ -38,8 +39,20 @@ public class StudyRepositoryImpl implements StudyRepository {
         record.getValue(DIARY_HISTORY.STUDYHOUR),
         record.getValue(DIARY_HISTORY.SUBJECTDETAIL),
         record.getValue(DIARY_HISTORY.TAG),
-        record.getValue(DIARY_HISTORY.INPUT_DATETIME)
-    ));
+        record.getValue(DIARY_HISTORY.INPUT_DATETIME),
+        record.getValue(DIARY_HISTORY.USERID)));
+  }
+
+  @Override
+  public List<Study> findByUserId(int userId) {
+    Result<Record> recordResult = dslContext.select().from(DIARY_HISTORY).where(DIARY_HISTORY.USERID.eq(userId)).fetch();
+    return recordResult.map(record -> new Study(
+        record.getValue(DIARY_HISTORY.SUBJECT),
+        record.getValue(DIARY_HISTORY.STUDYHOUR),
+        record.getValue(DIARY_HISTORY.SUBJECTDETAIL),
+        record.getValue(DIARY_HISTORY.TAG),
+        record.getValue(DIARY_HISTORY.INPUT_DATETIME),
+        record.getValue(DIARY_HISTORY.USERID)));
   }
 
 }

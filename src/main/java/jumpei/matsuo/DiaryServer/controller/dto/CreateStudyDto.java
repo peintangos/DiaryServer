@@ -12,6 +12,7 @@ public class CreateStudyDto {
   // FIXME: LocalDateTimeを使う
 //  @JsonFormat(pattern = "YYYY-MM-dd HH:mm:SS")
   private String inputDateTime;
+  private final int userId;
 
   public String getSubject() {
     return subject;
@@ -34,17 +35,18 @@ public class CreateStudyDto {
   }
 
   private CreateStudyDto(String subject, double studyHour, String subjectDetail, String tag,
-      String inputDateTime) {
+      String inputDateTime, int userId) {
     this.subject = subject;
     this.studyHour = studyHour;
     this.subjectDetail = subjectDetail;
     this.tag = tag;
     this.inputDateTime = inputDateTime;
+    this.userId = userId;
   }
 
 
 
   public Study createStudy() {
-    return new Study(subject,studyHour,subjectDetail,tag,inputDateTime);
+    return new Study(subject,studyHour,subjectDetail,tag,inputDateTime, userId);
   }
 }

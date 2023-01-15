@@ -1,5 +1,6 @@
 package jumpei.matsuo.DiaryServer.service;
 
+import java.util.List;
 import jumpei.matsuo.DiaryServer.domain.Study;
 import jumpei.matsuo.DiaryServer.domain.StudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,4 +15,8 @@ public class StudyService {
   public void persist(Study study){
     studyRepository.save(study);
 }
+
+  public List<Study> findBy(int userId) {
+    return studyRepository.findByUserId(userId);
+  }
 }
